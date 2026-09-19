@@ -1,54 +1,32 @@
-name: CI Build
+[app]
 
-on:
-  push:
-    branches: [ "main" ]
+# (str) Title of your application
+title = Jaanega India Tabhi To Bachayega India
 
-jobs:
-  build:
-    runs-on: ubuntu-22.04
+# (str) Package name
+package.name = jaanegaindia
 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+# (str) Package domain (needed for android packaging)
+package.domain = org.sewa
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+# (list) Source files to include (let it empty to include all files)
+source.include_exts = py,png,jpg,kv,atlas
 
-    - name: Install System Dependencies
-      run: |
-        sudo apt-get update -y
-        sudo apt-get install -y \
-          build-essential \
-          git \
-          python3-pip \
-          python3-dev \
-          ffmpeg \
-          libsdl2-dev \
-          libsdl2-image-dev \
-          libsdl2-mixer-dev \
-          libsdl2-ttf-dev \
-          portaudio19-dev \
-          libswscale-dev \
-          libavformat-dev \
-          libavcodec-dev \
-          zlib1g-dev \
-          openjdk-17-jdk
+# (list) Application requirements
+# comma separated e.g. requirements = sqlite3,kivy
+requirements = python3,kivy
 
-    - name: Upgrade Pip & Install Buildozer/Cython
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade setuptools wheel cython
-        pip install --upgrade buildozer
+# (str) Supported orientation (landscape, portrait or all)
+orientation = portrait
 
-    - name: Run Buildozer Debug
-      run: |
-        buildozer -v android debug
+# (list) Permissions
+android.permissions = INTERNET
 
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-apk
-        path: bin/*.apk
+# (int) Target Android API, should be as high as possible.
+android.api = 33
+
+# (int) Minimum API your APK will support.
+android.minapi = 21
+
+# (str) Android SDK version to use
+# android.sdk = 23
