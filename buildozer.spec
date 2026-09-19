@@ -18,7 +18,6 @@ jobs:
 
     - name: Install System Dependencies & Java
       run: |
-        sudo dpkg --add-architecture i386
         sudo apt-get update
         sudo apt-get install -y \
           build-essential \
@@ -38,10 +37,7 @@ jobs:
           openjdk-17-jdk \
           autoconf \
           libtool \
-          pkg-config \
-          libncurses5:i386 \
-          libstdc++6:i386 \
-          libz1:i386
+          pkg-config
 
     - name: Upgrade Pip & Install Buildozer/Cython
       run: |
