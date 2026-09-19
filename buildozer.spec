@@ -9,14 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: Install Dependencies
+    - name: Install System Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -37,7 +38,7 @@ jobs:
           libtool \
           pkg-config
 
-    - name: Install Buildozer and Cython
+    - name: Upgrade Pip and Install Buildozer
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade setuptools wheel cython
