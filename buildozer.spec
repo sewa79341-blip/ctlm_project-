@@ -34,23 +34,71 @@ jobs:
           libavformat-dev \
           libavcodec-dev \
           zlib1g-dev \
-          openjdk-17-jdk \
-          autoconf \
-          libtool \
-          pkg-config
+  name: CTLM APK Build
 
-    - name: Install Buildozer and Cython
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade setuptools wheel cython
-        pip install --upgrade buildozer
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
 
-    - name: Run Buildozer
-      run: |
-        buildozer -v android debug
+jobs:
+  build:
+    runs-on: ubuntu-22.04
 
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: package-apk
-        path: bin/*.apk
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            git \
+            zip \
+            unzip \
+            openjdk-17-jdk \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config \
+            cmake \
+            libffi-dev \
+            libssl-dev \
+            zlib1g-dev \
+            libncurses5-dev \
+            libncursesw5-dev
+
+      - name: Install Python Build Tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade setuptools wheel
+          python -m pip install "Cython<3"
+          python -m pip install --upgrade buildozer
+
+      - name: Verify Build Environment
+        run: |
+          echo "=== OS ==="
+          cat /etc/os-release
+          echo "=== Python ==="
+          python --version
+          echo "=== Buildozer ==="
+          buildozer --version
+          echo "=== Java ==="
+          java -version
+
+      - name: Build CTLM APK
+        run: |
+          buildozer -v android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: CTLM-APK
+          path: bin/*.apk
+          if-no-files-found: error
