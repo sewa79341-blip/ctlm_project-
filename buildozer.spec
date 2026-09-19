@@ -19,7 +19,8 @@ jobs:
 
     - name: Install System Dependencies
       run: |
-        sudo apt-get update
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get update -y
         sudo apt-get install -y \
           build-essential \
           git \
