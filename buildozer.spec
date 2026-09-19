@@ -16,14 +16,12 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install System Dependencies & Java
+    - name: Install Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
           build-essential \
           git \
-          python3-pip \
-          python3-dev \
           ffmpeg \
           libsdl2-dev \
           libsdl2-image-dev \
@@ -39,16 +37,13 @@ jobs:
           libtool \
           pkg-config
 
-    - name: Upgrade Pip & Install Buildozer/Cython
+    - name: Install Buildozer and Cython
       run: |
         python -m pip install --upgrade pip
-        pip install --upgrade cython buildozer
+        pip install --upgrade setuptools wheel cython
+        pip install --upgrade buildozer
 
-    - name: Verify Buildozer Setup
-      run: |
-        buildozer --version
-
-    - name: Run Buildozer Debug (Verbose Mode)
+    - name: Run Buildozer
       run: |
         buildozer -v android debug
 
