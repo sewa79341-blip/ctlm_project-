@@ -17,10 +17,9 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install System Dependencies
+    - name: Install Dependencies
       run: |
-        export DEBIAN_FRONTEND=noninteractive
-        sudo apt-get update -y
+        sudo apt-get update
         sudo apt-get install -y \
           build-essential \
           git \
@@ -39,7 +38,7 @@ jobs:
           libtool \
           pkg-config
 
-    - name: Upgrade Pip and Install Buildozer
+    - name: Install Buildozer and Cython
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade setuptools wheel cython
